@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Securify.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\robin\\source\\repos\\TestApp"
+    }
+  }
+}
