@@ -9,17 +9,23 @@ namespace Securify
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             var dir = GetDirectory(args);
 
             if (!dir.Exists)
-                throw new DirectoryNotFoundException($"{dir.FullName} could not be found");
+            {
+                System.Console.WriteLine($"{dir.FullName} could not be found");
+                return (int)ExitCodes.DirectoryNotFound;
+            }
 
             var controllerDir = dir.EnumerateDirectories("controllers", SearchOption.AllDirectories).FirstOrDefault();
 
             if (controllerDir == null || !controllerDir.Exists)
-                throw new DirectoryNotFoundException($"Controller directory not found");
+            {
+                System.Console.WriteLine($"Controller directory not found");
+                return (int)ExitCodes.DirectoryNotFound;
+            }
 
             var rewriter = new TokenAttributeSyntaxRewriter();
 
@@ -27,7 +33,7 @@ namespace Securify
                 Rewrite(file, rewriter);
 
             System.Console.WriteLine("Token rewrite completed successfully");
-            System.Console.ReadKey();
+            return (int)ExitCodes.Success;
         }
 
 
