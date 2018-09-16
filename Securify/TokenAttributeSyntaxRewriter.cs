@@ -11,14 +11,20 @@ namespace Securify.Console
 {
     public class TokenAttributeSyntaxRewriter : CSharpSyntaxRewriter
     {
-        const string attributeName = "Attribute name here";
+        const string attributeName = "AttributeNameHere";
 
         public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
         {
+            var commented = node.DescendantTrivia()
+                .Where(c => c.Kind() == SyntaxKind.SingleLineCommentTrivia)
+                .FirstOrDefault(c => c.ToString().Contains(attributeName));
+
+            if (commented != null)
+                node = node.ReplaceTrivia(commented, SyntaxTrivia(SyntaxKind.WhitespaceTrivia, ""));
+
             var attribute = node.AttributeLists.SelectMany(c => c.Attributes)
                 .FirstOrDefault(a => (a.Name as IdentifierNameSyntax)
                     .Identifier.Text.StartsWith(attributeName));
-
 
             if (node.AttributeLists.Any(al => al.Contains(attribute)))
                 return node;
