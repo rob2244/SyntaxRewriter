@@ -11,7 +11,7 @@ namespace Securify.Console
 {
     public class TokenAttributeSyntaxRewriter : CSharpSyntaxRewriter
     {
-        const string attributeName = "TokenAuthorize";
+        const string attributeName = "Attribute name here";
 
         public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
         {
